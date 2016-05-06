@@ -1,0 +1,4 @@
+### The mapped values are an _estimate_ of per-county expenditures
+
+The amount of money spent by the Fish and Wildlife Service (FWS), other federal agencies, and states, as given in FWS's annual reports, is provided by species. Because we 'know' where species occur at county-level resolution, we know that the vast majority of money should have been spent in those counties. Here we _assume_ that the expenditures on a given species were distributed equally across the species' range. To get per-county ESA expenditures we sum across all species that occur within each county. Disaggregation can be tricky, but we think it provides a decent first estimate of where money is spent on listed species because the disaggregation is bounded by species distributions (i.e., most funds should be spent in counties where a species occurs).
+

@@ -1,0 +1,133 @@
+---
+title: "Recovery Actions"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: cosmo
+    storyboard: true
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(DT)
+library(ggplot2)
+library(plotly)
+library(flexdashboard)
+
+load("../data/ROAR_05May2016.RData")
+
+spp_list <- sort(unique(unlist(unlist(full$action_species))))
+spp_list <- c("All", spp_list)
+
+work_list <- sort(unique(unlist(unlist(full$work_types))))
+work_list <- c("All", work_list)
+
+ESO_list <- sort(unique(full$plan_lead_office))
+ESO_list <- c("All", ESO_list)
+
+act_priority_list <- sort(unique(full$action_priority))
+act_priority_list <- c("All", act_priority_list)
+
+lead_agency_list <- sort(unique(unlist(unlist(full$action_lead_agencies))))
+lead_agency_list <- c("All", lead_agency_list)
+
+responsible_list <- sort(unique(unlist(unlist(full$responsible_parties))))
+responsible_list <- c("All", responsible_list)
+
+status_list <- sort(unique(full$action_status))
+status_list <- c("All", status_list)
+
+cur_dat <- reactive({
+  if(input$spp_select != "All") {
+    return(full[grep(full$action_species, 
+                     pattern = input$spp_select,
+                     fixed = TRUE), ])
+  }
+  return(full)
+})
+
+```
+
+### We can examine summary information across all species and all actions 
+
+Filters {.sidebar}
+================================================================================
+
+```{r}
+selectInput("spp_select", 
+            label = "Species",
+            choices = spp_list,
+            selected = "All")
+
+```
+
+Dashboard
+================================================================================
+
+Column
+--------------------------------------------------------------------------------
+
+### Number of actions {.value-box}
+
+```{r}
+renderValueBox({
+  valueBox(
+    value = dim(cur_dat())[1],
+    icon = "fa-list-ol",
+    color = "primary"
+  )
+})
+```
+
+### Number of work types {.value-box}
+
+```{r}
+renderValueBox({
+  valueBox(
+    value = length(unique(unlist(unlist(cur_dat()$work_type)))),
+    icon = "fa-list-ol",
+    color = "success"
+  )
+})
+```
+
+Row
+--------------------------------------------------------------------------------
+
+### Number of responsible parties {.value-box}
+
+```{r}
+renderValueBox({
+  valueBox(
+    value = length(unique(unlist(unlist(cur_dat()$responsible_parties)))),
+    icon = "fa-list-ol",
+    color = "success"
+  )
+})
+```
+
+Data
+================================================================================
+
+### Recovery actions data
+
+```{r}
+# shinyApp(
+#   ui = fillPage(
+#     fillCol(flex = c(NA, 1),
+#             dataTableOutput("sel_dat")
+#     )
+#   ),
+#   server = function(input, output) {
+    # output$sel_data <- 
+  renderDataTable({
+      the_dat <- head(cur_dat(), 30)
+      DT::datatable(the_dat,         
+            rownames=FALSE,
+            filter="top", 
+            extensions="ColVis", 
+            options = list(dom = 'C<"clear">lfrtip',
+                           pageLength = 25))
+    })
+#   }
+# )
+```
