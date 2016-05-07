@@ -111,7 +111,7 @@ shinyServer(function(input, output, session) {
 
         highchart() %>%
             hc_xAxis(categories = cur_df$x) %>%
-            hc_add_series(name = "# actions", data = cur_df$y, type = "column") %>%
+            hc_add_series(data = cur_df$y, type = "column") %>%
             hc_colors("#0A4783") %>%
             hc_title(text = "Distribution of work types",
                      margin = 20, align = "left") %>%
@@ -130,7 +130,7 @@ shinyServer(function(input, output, session) {
         res <- wordcloud(w2, 
                          random.color = FALSE,
                          rot.per = 0,
-                         scale = c(3, 0.3),
+                         scale = c(6, 0.7),
                          asp = 2,
                          min.freq = 5,
                          max.words = 100,

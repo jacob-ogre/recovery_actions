@@ -147,18 +147,18 @@ body <- dashboardBody(
                     fluidRow(hr()),
                     fluidRow(
                         column(6,
-                            box(title = "(Up to) Top 100 words in actions",
-                                solidHeader = FALSE,
-                                status = "primary",
-                                height = NULL,
-                                width = NULL,
-                                plotOutput("desc_cloud", height = "300px")
-                            )
+                            h4("(Up to) Top 100 words in actions"),
+                            plotOutput("desc_cloud", height = "600px")
                         )
                     )
                 ),
 
                 fluidRow(
+                    column(12,
+                        br(),
+                        hr(),
+                        br()
+                    ),
                     column(3),
                     column(6,
                         div(HTML(defenders_cc()), style=center_text)
