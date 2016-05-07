@@ -65,6 +65,9 @@ ESO_list <- c("All", ESO_list)
 act_priority_list <- sort(unique(full$action_priority))
 act_priority_list <- c("All", act_priority_list)
 
+priority_num_list <- sort(unique(full$action_priority_number))
+priority_num_list <- c("All", priority_num_list)
+
 lead_agency_list <- sort(unique(unlist(unlist(full$action_lead_agencies))))
 lead_agency_list <- c("All", lead_agency_list)
 

@@ -99,7 +99,7 @@ body <- dashboardBody(
                         ),
                         selectInput("priornum_in",
                                     label = "Action Priority Number",
-                                    choices = act_priority_list,
+                                    choices = priority_num_list,
                                     width = "95%"
                         )
                     )
@@ -148,7 +148,21 @@ body <- dashboardBody(
                     fluidRow(
                         column(6,
                             h4("(Up to) Top 100 words in actions"),
-                            plotOutput("desc_cloud", height = "600px")
+                            plotOutput("desc_cloud", height = "600px"),
+                            helpText("Some words may not be printed, even if in
+                                     the top-100, because of algorithm limitations.")
+                        ),
+                        column(6,
+                            highchartOutput("lead_off_plot", height = "600px")
+                        )
+                    ),
+                    fluidRow(hr()),
+                    fluidRow(
+                        column(6,
+                            highchartOutput("prior_num_plot", height = "400px")
+                        ),
+                        column(6,
+                            highchartOutput("lead_ag_plot", height = "400px")
                         )
                     )
                 ),

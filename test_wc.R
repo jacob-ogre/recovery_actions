@@ -1,9 +1,8 @@
 function (words, freq, scale = c(4, 0.5), min.freq = 3, max.words = Inf,
-    random.order = TRUE, random.color = FALSE, rot.per = 0.1,
-    colors = "black", ordered.colors = FALSE, use.r.layout = FALSE,
-    fixed.asp = TRUE, ...)
-{
-    if (!fixed.asp && rot.per > 0)
+		  random.order = TRUE, random.color = FALSE, rot.per = 0.1,
+		  colors = "black", ordered.colors = FALSE, use.r.layout = FALSE,
+		  fixed.asp = TRUE, ...) {
+    	  if (!fixed.asp && rot.per > 0)
         stop("Variable aspect ratio not supported for rotated words. Set rot.per=0.")
     tails <- "g|j|p|q|y"
     last <- 1

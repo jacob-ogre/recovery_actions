@@ -71,6 +71,10 @@ shinyServer(function(input, output, session) {
             cur_sub <- cur_sub[grep(x = cur_sub$action_priority, 
                                     pattern = input$actprior_in, fixed=T), ]
         }
+        if(input$priornum_in != "All") {
+            cur_sub <- cur_sub[cur_sub$action_priority_number == input$priornum_in &
+                               !is.na(cur_sub$action_priority_number), ]
+        }
         cur_sub
     })
 
@@ -138,6 +142,60 @@ shinyServer(function(input, output, session) {
         return(res)
     })
 
+    output$lead_off_plot <- renderHighchart({
+        ESO_cnts <- tapply(sub_df()$plan_title,
+                           INDEX = sub_df()$plan_lead_office,
+                           FUN = function(x) length(unique(x)))
+        ESO_cnts <- sort(ESO_cnts, decreasing=TRUE)
+        cur_df <- data.frame(x = names(ESO_cnts), y = as.vector(ESO_cnts))
+        cur_df$x <- factor(cur_df$x, 
+                           levels = cur_df$x[order(-cur_df$y)])
+        if(length(cur_df$x) > 20) {
+            cur_df <- head(cur_df, 20)
+        }
+
+        highchart() %>%
+            hc_xAxis(categories = cur_df$x) %>%
+            hc_add_series(data = cur_df$y, type = "column") %>%
+            hc_colors("#0A4783") %>%
+            hc_title(text = "Plans per Ecol. Serv. office (up to top 20)",
+                     margin = 20, align = "left") %>%
+            hc_legend(enabled = FALSE) %>%
+            hc_yAxis(title = list(text = "# plans"))
+    })
+
+    output$prior_num_plot <- renderHighchart({
+        cur_dat <- round(table(sub_df()$action_priority_number) /
+                         length(sub_df()$action_priority_number), 3)
+        cur_df <- data.frame(x = names(cur_dat), y = as.vector(cur_dat))
+        highchart() %>%
+            hc_add_series_labels_values(cur_df$x, cur_df$y, 
+                                        colorByPoint = TRUE, 
+                                        type = "pie") %>%
+            hc_title(text = "Actions per priority number",
+                     margin = 20, align = "left") %>%
+            hc_legend(enabled = FALSE)
+    })
+
+    output$lead_ag_plot <- renderHighchart({
+        cur_dat <- sort(table(unlist(unlist(sub_df()$action_lead_agencies))),
+                        decreasing = TRUE)
+        cur_df <- data.frame(x = names(cur_dat), y = as.vector(cur_dat))
+        cur_df$x <- factor(cur_df$x, 
+                           levels = cur_df$x[order(-cur_df$y)])
+        if(length(cur_df$x) > 20) {
+            cur_df <- head(cur_df, 20)
+        }
+        highchart() %>%
+            hc_xAxis(categories = cur_df$x) %>%
+            hc_add_series(data = cur_df$y, type = "column") %>%
+            hc_colors("#0A4783") %>%
+            hc_title(text = "Actions per lead agency (up to top 20 agencies)",
+                     margin = 20, align = "left") %>%
+            hc_legend(enabled = FALSE) %>%
+            hc_yAxis(title = list(text = "# actions"))
+    })
+
     output$the_data <- renderDataTable({
       the_dat <- sub_df()
       DT::datatable(the_dat,         
@@ -147,20 +205,5 @@ shinyServer(function(input, output, session) {
             options = list(dom = 'C<"clear">lfrtip',
                            pageLength = 25))
     })
-
-    # gvisLineChart(dat,
-    #     xvar = "year",
-    #     yvar = c("threats", "demography"),
-    #     options = list(legend = "{position:'top'}",
-    #                    vAxis = "{title:'Score', minValue:'-1', maxValue:'1'}",
-    #                    hAxis = "{title:'Year'}",
-    #                    height = 300,
-    #                    dataOpacity = 0.3,
-    #                    pointSize = 9,
-    #                    lineWidth = 2,
-    #                    chartArea="{bottom: 20, left: 100, width:'80%', height:'70%'}"
-    #               ) 
-    #     )
-
 
 })
