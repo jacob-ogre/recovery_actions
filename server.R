@@ -90,7 +90,16 @@ shinyServer(function(input, output, session) {
         length(unique(unlist(unlist(sub_df()$work_types))))
     })
 
-    output$work_plot <- renderPlotly({
+    output$status_plot <- renderHighchart({
+        hchart(sub_df()$action_status) %>% 
+            hc_colors("#0A4783") %>%
+            hc_title(text = "Status of recovery actions",
+                     margin = 20, align = "left") %>%
+            hc_legend(enabled = FALSE) %>%
+            hc_yAxis(title = list(text = "# actions"))
+    })
+
+    output$work_plot <- renderHighchart({
         work_cnts <- sort(table(unlist(unlist(sub_df()$work_types))), 
                           decreasing=TRUE)
         cur_df <- data.frame(x = names(work_cnts), y = as.vector(work_cnts))
@@ -100,28 +109,14 @@ shinyServer(function(input, output, session) {
             cur_df <- head(cur_df, 20)
         }
 
-        plt <- ggplot(data = cur_df, aes(x, y)) +
-               geom_bar(stat = "identity", fill = "#0A4783") +
-               labs(x = "", y = "\nNumber actions\n") +
-               theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5)) +
-               theme_pander()
-
-        ggplotly(plt)
-    })
-
-    output$status_plot <- renderPlotly({
-        stat_cnts <- sort(table(sub_df()$action_status), decreasing=TRUE)
-        cur_df <- data.frame(x = names(stat_cnts), y = as.vector(stat_cnts))
-        cur_df$x <- factor(cur_df$x, 
-                           levels = cur_df$x[order(-cur_df$y)])
-
-        plt <- ggplot(data = cur_df, aes(x, y)) +
-               geom_bar(stat = "identity", fill = "#0A4783") +
-               labs(x = "", y = "\n# actions\n") +
-               theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5)) +
-               theme_pander()
-
-        ggplotly(plt)
+        highchart() %>%
+            hc_xAxis(categories = cur_df$x) %>%
+            hc_add_series(name = "# actions", data = cur_df$y, type = "column") %>%
+            hc_colors("#0A4783") %>%
+            hc_title(text = "Distribution of work types",
+                     margin = 20, align = "left") %>%
+            hc_legend(enabled = FALSE) %>%
+            hc_yAxis(title = list(text = "# actions"))
     })
 
     output$desc_cloud <- renderPlot({

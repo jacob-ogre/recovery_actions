@@ -138,10 +138,10 @@ body <- dashboardBody(
                     ),
                     fluidRow(
                         column(6,
-                            plotlyOutput("status_plot", height = "350px")
+                            highchartOutput("status_plot", height = "500px")
                         ),
                         column(6,
-                            plotlyOutput("work_plot", height = "350px")
+                            highchartOutput("work_plot", height = "500px")
                         )
                     ),
                     fluidRow(hr()),
