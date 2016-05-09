@@ -100,7 +100,8 @@ shinyServer(function(input, output, session) {
             hc_title(text = "Status of recovery actions",
                      margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>%
-            hc_yAxis(title = list(text = "# actions"))
+            hc_yAxis(title = list(text = "# actions")) %>% 
+            hc_exporting(enabled = TRUE)
     })
 
     output$work_plot <- renderHighchart({
