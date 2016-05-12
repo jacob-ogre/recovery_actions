@@ -180,6 +180,8 @@ shinyServer(function(input, output, session) {
                                         type = "pie") %>%
             hc_title(text = "Proportion of actions by priority number",
                      margin = 20, align = "left") %>%
+            hc_subtitle(text = "1 = prevent extinction; 2 = avoid declines; 3 = other",
+                        margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>% 
             hc_exporting(enabled = TRUE)
 
@@ -198,21 +200,36 @@ shinyServer(function(input, output, session) {
             hc_xAxis(categories = cur_df$x) %>%
             hc_add_series(data = cur_df$y, type = "column") %>%
             hc_colors("#0A4783") %>%
-            hc_title(text = "Actions per lead agency (up to top 20 agencies)",
+            hc_title(text = "# actions per lead agency (up to top 20 agencies)",
                      margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>%
             hc_yAxis(title = list(text = "# actions")) %>% 
             hc_exporting(enabled = TRUE)
     })
 
+    output$page_len <- renderUI({
+        selectInput("show_rows",
+                    "# Rows to show / download",
+                    choices = c("25" = 25,
+                                "50" = 50,
+                                "100" = 100,
+                                "1000" = 1000,
+                                "All (Danger, may crash!)" = length(sub_df()$plan_title)
+                    ),
+                    width = "15%"
+        )
+    })
+
     output$the_data <- renderDataTable({
       the_dat <- sub_df()
-      DT::datatable(the_dat,         
-            rownames=FALSE,
-            filter="top", 
-            extensions="ColVis", 
-            options = list(dom = 'C<"clear">lfrtip',
-                           pageLength = 25))
+      DT::datatable(the_dat,
+            rownames = FALSE,
+            filter = "top", 
+            extensions = "Buttons", 
+            options = list(dom = 'Bfrtip',
+                           buttons = c("colvis", "csv", "excel", "print"),
+                           # lengthMenu = c(25, 50, 100, length(the_dat$plan_title)),
+                           pageLength = input$show_rows))
     })
 
 })

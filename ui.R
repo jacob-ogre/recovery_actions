@@ -191,8 +191,9 @@ body <- dashboardBody(
             tags$style(type="text/css", "body {padding-top:30px;}"),
             fluidRow(
                 div(style="overflow-x: scroll; background-color: #FFFFFF;
-                           padding-left: 15px", 
+                           padding-left: 15px; padding-top: 30px", 
                     column(12,
+                        uiOutput("page_len"),
                         dataTableOutput("the_data")
                     )
                 )
