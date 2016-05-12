@@ -121,7 +121,9 @@ shinyServer(function(input, output, session) {
             hc_title(text = "Distribution of work types",
                      margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>%
-            hc_yAxis(title = list(text = "# actions"))
+            hc_yAxis(title = list(text = "# actions")) %>% 
+            hc_exporting(enabled = TRUE)
+
     })
 
     output$desc_cloud <- renderPlot({
@@ -162,20 +164,25 @@ shinyServer(function(input, output, session) {
             hc_title(text = "Plans per Ecol. Serv. office (up to top 20)",
                      margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>%
-            hc_yAxis(title = list(text = "# plans"))
+            hc_yAxis(title = list(text = "# plans")) %>% 
+            hc_exporting(enabled = TRUE)
+
     })
 
     output$prior_num_plot <- renderHighchart({
-        cur_dat <- round(table(sub_df()$action_priority_number) /
-                         length(sub_df()$action_priority_number), 3)
+        cur_dat <- round(table(sub_df()$action_priority) /
+                         length(sub_df()$action_priority), 3)
+        names(cur_dat) <- c("3", "1", "2")
         cur_df <- data.frame(x = names(cur_dat), y = as.vector(cur_dat))
         highchart() %>%
             hc_add_series_labels_values(cur_df$x, cur_df$y, 
                                         colorByPoint = TRUE, 
                                         type = "pie") %>%
-            hc_title(text = "Actions per priority number",
+            hc_title(text = "Proportion of actions by priority number",
                      margin = 20, align = "left") %>%
-            hc_legend(enabled = FALSE)
+            hc_legend(enabled = FALSE) %>% 
+            hc_exporting(enabled = TRUE)
+
     })
 
     output$lead_ag_plot <- renderHighchart({
@@ -194,7 +201,8 @@ shinyServer(function(input, output, session) {
             hc_title(text = "Actions per lead agency (up to top 20 agencies)",
                      margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>%
-            hc_yAxis(title = list(text = "# actions"))
+            hc_yAxis(title = list(text = "# actions")) %>% 
+            hc_exporting(enabled = TRUE)
     })
 
     output$the_data <- renderDataTable({
