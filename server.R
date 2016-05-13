@@ -170,9 +170,8 @@ shinyServer(function(input, output, session) {
     })
 
     output$prior_num_plot <- renderHighchart({
-        cur_dat <- round(table(sub_df()$action_priority) /
-                         length(sub_df()$action_priority), 3)
-        names(cur_dat) <- c("3", "1", "2")
+        cur_dat <- round(table(sub_df()$action_prior_num) /
+                         sum(table(sub_df()$action_prior_num)), 3)
         cur_df <- data.frame(x = names(cur_dat), y = as.vector(cur_dat))
         highchart() %>%
             hc_add_series_labels_values(cur_df$x, cur_df$y, 

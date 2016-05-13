@@ -77,6 +77,10 @@ responsible_list <- c("All", responsible_list)
 status_list <- sort(unique(full$action_status))
 status_list <- c("All", status_list)
 
+full$action_prior_num <- ifelse(full$action_priority == "Other",
+                                3,
+                                ifelse(full$action_priority == "Prevent significant decline or habitat loss", 2, 1))
+
 #############################################################################
 # update colors for CSS
 validColors_2 <- c("red", "yellow", "aqua", "blue", "light-blue", "green",
