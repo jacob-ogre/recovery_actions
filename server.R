@@ -173,6 +173,7 @@ shinyServer(function(input, output, session) {
         cur_dat <- round(table(sub_df()$action_prior_num) /
                          sum(table(sub_df()$action_prior_num)), 3)
         cur_df <- data.frame(x = names(cur_dat), y = as.vector(cur_dat))
+        Sys.sleep(1)
         highchart() %>%
             hc_add_series_labels_values(cur_df$x, cur_df$y, 
                                         colorByPoint = TRUE, 
@@ -183,7 +184,6 @@ shinyServer(function(input, output, session) {
                         margin = 20, align = "left") %>%
             hc_legend(enabled = FALSE) %>% 
             hc_exporting(enabled = TRUE)
-
     })
 
     output$lead_ag_plot <- renderHighchart({
