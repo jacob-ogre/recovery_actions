@@ -218,8 +218,8 @@ shinyServer(function(input, output, session) {
     })
 
     output$the_data <- renderDataTable({
-      the_dat <- sub_df()
-      DT::datatable(the_dat,
+        the_dat <- sub_df()
+        DT::datatable(the_dat,
             rownames = FALSE,
             filter = "top", 
             extensions = "Buttons", 
