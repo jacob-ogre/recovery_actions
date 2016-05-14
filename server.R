@@ -123,7 +123,6 @@ shinyServer(function(input, output, session) {
             hc_legend(enabled = FALSE) %>%
             hc_yAxis(title = list(text = "# actions")) %>% 
             hc_exporting(enabled = TRUE)
-
     })
 
     output$desc_cloud <- renderPlot({
@@ -166,7 +165,6 @@ shinyServer(function(input, output, session) {
             hc_legend(enabled = FALSE) %>%
             hc_yAxis(title = list(text = "# plans")) %>% 
             hc_exporting(enabled = TRUE)
-
     })
 
     output$prior_num_plot <- renderHighchart({
