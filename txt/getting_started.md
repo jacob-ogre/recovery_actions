@@ -1,6 +1,6 @@
 ### _About_
 
-This is an incomplete web app using data from the US Fish and Wildlife Service's [ROAR database](https://ecos.fws.gov/roar/pub/ConfigureRecActionReport.do?path=ROAR%20Custom%20Queries.Public%20Actions%20AdHoc). We plan to continue revising and updating this app as time progresses; see below if you'd like to contribute.
+This is an incomplete web app using data from the US Fish and Wildlife Service's [ROAR database](https://ecos.fws.gov/roar/pub/ConfigureRecActionReport.do?path=ROAR%20Custom%20Queries.Public%20Actions%20AdHoc). We plan to continue revising and updating this app as time progresses; see below if you'd like to contribute. Also feel free to check out a couple of simple working "papers" that use this data [here](https://defend-esc-dev.org/working_papers/recovery_actions_take_1.html) and [here](https://defend-esc-dev.org/working_papers/recovery_actions_take_2.html).
 
 ### _Quick Start_
 

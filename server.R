@@ -125,23 +125,32 @@ shinyServer(function(input, output, session) {
             hc_exporting(enabled = TRUE)
     })
 
-    output$desc_cloud <- renderPlot({
-        if(length(sub_df()$action_description) > 1000) {
-            subsamp <- sample(sub_df()$action_description, 1000)
-        } else {
-            subsamp <- sub_df()$action_description
-        }
-        w1 <- gsub("\\,|\\.|\\)|\\(", "", x = subsamp)
-        w2 <- paste(w1, collapse = " ")
-        res <- wordcloud(w2, 
-                         random.color = FALSE,
-                         rot.per = 0,
-                         scale = c(6, 0.7),
-                         asp = 2,
-                         min.freq = 5,
-                         max.words = 100,
-                         colors = c("lightsteelblue4", "black", "darkorange1"))
-        return(res)
+    output$desc_cloud <- renderD3wordcloud({
+        cols <- viridis(5, 1)
+        cols <- substr(cols, 0, 7)
+
+        terms <- Corpus(VectorSource(sample(full$action_description, 5000)))
+        desc <- tm_map(terms, removePunctuation)
+        desc <- tm_map(desc, function(x){ removeWords(x, stopwords()) })
+        tdm <- TermDocumentMatrix(desc)
+        tdm <- removeSparseTerms(tdm, 0.99)
+        m <- as.matrix(tdm)
+        v <- sort(rowSums(m), decreasing = TRUE)
+        d <- data.frame(word = names(v), freq = v)
+        d <- d %>% 
+             tbl_df() %>%
+             arrange(desc(freq)) %>% 
+             head(100)
+
+        words <- d$word
+        freqs <- d$freq
+
+        d3wordcloud(words, 
+                    freqs, 
+                    rotate.min = 0,
+                    rotate.max = 0,
+                    spiral = "rectangular",
+                    tooltip = TRUE)
     })
 
     output$lead_off_plot <- renderHighchart({

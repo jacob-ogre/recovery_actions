@@ -148,9 +148,7 @@ body <- dashboardBody(
                     fluidRow(
                         column(6,
                             h4("(Up to) Top 100 words in actions"),
-                            plotOutput("desc_cloud", height = "600px"),
-                            helpText("Some words may not be printed, even if in
-                                     the top-100, because of algorithm limitations.")
+                            d3wordcloudOutput("desc_cloud", height = "600px")
                         ),
                         column(6,
                             highchartOutput("lead_off_plot", height = "600px")
