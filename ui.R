@@ -199,6 +199,14 @@ body <- dashboardBody(
                 )
             )
         ),
+        tabPanel("About",
+            column(4),
+            column(4,
+                br(), br(),
+                includeMarkdown("txt/getting_started.md")
+            ),
+            column(4)
+        ),
         theme = "yeti.css",
         inverse = FALSE,
         position = "fixed-top"   
